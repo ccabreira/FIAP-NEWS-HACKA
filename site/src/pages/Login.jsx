@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { loginUser } from "../services/api"; // ✅ Certifique-se que esse caminho está correto
+import { useAuth } from "../context/AuthContext";
+import { loginUser } from "../services/api"; 
 
 function Login() {
   const [email, setEmail] = useState("");
