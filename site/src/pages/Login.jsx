@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { loginUser } from "../services/api";
+import { loginUser } from "../services/api"; // ✅ Certifique-se que esse caminho está correto
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -23,3 +23,4 @@ function Login() {
 }
 
 export default Login;
+

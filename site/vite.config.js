@@ -13,7 +13,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': '/src front', // Atualiza o caminho para a pasta correta
+      '@': '/src',
     },
   },
 });
