@@ -18,5 +18,12 @@ function Home() {
     </div>
   );
 }
+useEffect(() => {
+  getNews().then((data) => {
+    console.log("Notícias carregadas:", data);
+    setNews(data);
+  });
+}, []);
+
 
 export default Home;
