@@ -1,10 +1,9 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
 const User = require("../models/User"); // Modelo do usuário
 
 const router = express.Router();
 
-// 🔹 Endpoint para redefinir senha
+// 🔹 Endpoint para redefinir senha (sem criptografia)
 router.post("/reset-password", async (req, res) => {
   const { email, newPassword } = req.body;
 
@@ -15,9 +14,8 @@ router.post("/reset-password", async (req, res) => {
       return res.status(404).json({ error: "Usuário não encontrado." });
     }
 
-    // 🔹 Criptografa a nova senha
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
+    // 🔹 Atualiza a senha sem criptografia
+    user.password = newPassword;
 
     // 🔹 Salva a nova senha no banco de dados
     await user.save();
@@ -30,3 +28,4 @@ router.post("/reset-password", async (req, res) => {
 });
 
 module.exports = router;
+
