@@ -1,5 +1,5 @@
 // services/api.js
-const API_URL = import.meta.env.VITE_API_URL || "https://fiap-news-backend.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://fiap-news-api.onrender.com";
 
 export const loginUser = async (email, password) => {
   const response = await fetch(`${API_URL}/auth/login`, {
