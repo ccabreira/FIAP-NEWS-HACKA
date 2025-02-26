@@ -1,37 +1,31 @@
-require("dotenv").config();
 const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const cors = require("cors");
-const connectDB = require("./src/config/db");
 
-// Conecta ao MongoDB
-connectDB();
+const userRoutes = require("./src/routes/userRoutes");
+
+
+dotenv.config(); // 🔹 Carrega variáveis de ambiente
 
 const app = express();
 
-// 🔹 Middleware
-app.use(express.json());
-app.use(cors());
+// 🔹 Middlewares
+app.use(express.json()); // Para receber JSON no body
+app.use(cors()); // Permitir requisições de outras origens
 
-// 🔹 Importa as rotas
-const authRoutes = require("./src/routes/authRoutes");
-const userRoutes = require("./src/routes/userRoutes");
-const newsRoutes = require("./src/routes/newsRoutes");
+// 🔹 Conectar ao MongoDB
+mongoose
+  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/fiapnews", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log("✅ Conectado ao MongoDB"))
+  .catch((err) => console.error("❌ Erro ao conectar ao MongoDB:", err));
 
-// 🔹 Usa as rotas corretamente
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);  // 🔹 Essa rota estava faltando
-app.use("/api/news", newsRoutes);
+// 🔹 Definição das rotas
+app.use("/api/users", userRoutes); // Rota para login e cadastro de usuários
 
-// 🔹 Rota raiz para teste
-app.get("/", (req, res) => {
-    res.send("🚀 API Online!");
-});
-
-// 🔹 Inicializa o servidor
+// 🔹 Porta do servidor
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
-
-console.log(`🌍 Teste a API em: http://localhost:${PORT}/api/news`);
-
-
-

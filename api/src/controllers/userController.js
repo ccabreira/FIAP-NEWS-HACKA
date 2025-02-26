@@ -1,75 +1,82 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
-const AppError = require("../utils/AppError");
 
-// Criar usuário
-const createUser = async (req, res, next) => {
+// 🔹 Criar usuário
+const createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, isAdmin } = req.body;
+
     if (!name || !email || !password) {
-      return next(new AppError("Todos os campos são obrigatórios", 400));
+      return res.status(400).json({ error: "Todos os campos são obrigatórios." });
     }
 
     const userExists = await User.findOne({ email });
-    if (userExists) return next(new AppError("E-mail já cadastrado", 400));
+    if (userExists) {
+      return res.status(400).json({ error: "E-mail já cadastrado." });
+    }
 
+    console.log("Registrando usuário:", { name, email, password });
+
+    // 🔹 Sempre criptografa a senha antes de salvar no banco
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashedPassword });
+    console.log("Senha criptografada:", hashedPassword);
 
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword, // 🔹 Salvando senha criptografada
+      isAdmin: isAdmin || false,
+    });
+
+    await user.save();
     res.status(201).json({ message: "Usuário criado com sucesso", user });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error("Erro ao criar usuário:", error);
+    res.status(500).json({ error: "Erro ao criar usuário." });
   }
 };
 
-// Login de usuário
-exports.loginUser = async (req, res) => {
+// 🔹 Login de usuário
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ error: "Credenciais inválidas." });
+      return res.status(401).json({ error: "E-mail não encontrado." });
     }
 
+    console.log("Usuário encontrado no banco:", user);
+    console.log("Senha enviada pelo usuário:", password);
+    console.log("Senha armazenada no banco:", user.password);
+
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Senha corresponde?", isMatch);
+
     if (!isMatch) {
-      return res.status(401).json({ error: "Credenciais inválidas." });
+      return res.status(401).json({ error: "Senha errada." });
     }
 
     const token = jwt.sign(
       { id: user._id, email: user.email, isAdmin: user.isAdmin },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || "secret",
       { expiresIn: "1h" }
     );
 
-    res.json({ token, user: { id: user._id, email: user.email, isAdmin: user.isAdmin } });
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin
+      }
+    });
   } catch (error) {
     console.error("Erro ao realizar login:", error);
     res.status(500).json({ error: "Erro no servidor. Tente novamente." });
   }
 };
 
-// Obter perfil do usuário autenticado
-const getUserProfile = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user.id).select("-password");
-
-    if (!user) {
-      return next(new AppError("Usuário não encontrado", 404));
-    }
-
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-};
-
-module.exports = {
-  createUser,
-  loginUser: exports.loginUser,  // Correção na referência da função exportada
-  getUserProfile
-};
-
-
+module.exports = { createUser, loginUser };
