@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getNewsById } from "../services/api";
+import { Link } from "react-router-dom";
+
 
 function NewsDetail() {
   const { id } = useParams();
@@ -23,6 +25,15 @@ function NewsDetail() {
     </div>
   );
 }
+const NewsDetail = ({ title, content }) => {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>{content}</p>
+      <Link to="/">🔙 Voltar para Home</Link>
+    </div>
+  );
+};
 
 export default NewsDetail;
 
