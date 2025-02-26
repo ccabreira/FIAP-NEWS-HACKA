@@ -1,63 +1,122 @@
 import { useState } from "react";
-import { registerUser } from "../services/api";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { registerUser } from "../services/api";
 
-function Register() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const [error, setError] = useState("");
+export default function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    setError(""); // Reseta erro ao tentar novamente
+    setError(null);
+    setLoading(true);
 
     try {
-      const response = await registerUser(form.name, form.email, form.password);
+      const response = await registerUser(name, email, password);
 
-      if (!response || response.error) {
-        throw new Error(response?.error || "Erro ao registrar usuário.");
+      if (response?.user) {
+        navigate("/news"); // 🔹 Redireciona usuário para a página de notícias
+      } else {
+        setError("Erro ao registrar usuário. Tente novamente.");
       }
-
-      alert("Registro bem-sucedido! Redirecionando para o login.");
-      navigate("/login");
     } catch (err) {
-      console.error("Erro no registro:", err);
-      setError(err.message || "Erro desconhecido ao registrar.");
+      setError("Erro ao registrar usuário.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h1>Registrar</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className="register-container" style={styles.container}>
+      <form onSubmit={handleRegister} style={styles.form}>
+        <label style={styles.label}>NOME</label>
         <input
           type="text"
-          placeholder="Nome"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
+          style={styles.input}
         />
+
+        <label style={styles.label}>E-MAIL</label>
         <input
           type="email"
-          placeholder="E-mail"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
+          style={styles.input}
         />
+
+        <label style={styles.label}>SENHA</label>
         <input
           type="password"
-          placeholder="Senha"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
+          style={styles.input}
         />
-        <button type="submit">Registrar</button>
+
+        <button type="submit" disabled={loading} style={styles.button}>
+          {loading ? "Registrando..." : "REGISTRAR"}
+        </button>
+
+        {error && <p style={styles.error}>{error}</p>}
       </form>
-      <button onClick={() => navigate("/")}>Voltar para Home</button>
     </div>
   );
 }
 
-export default Register;
+const styles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+    background: "#2b0032",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    padding: "20px",
+    borderRadius: "8px",
+    background: "#400040",
+    width: "300px",
+    color: "#fff",
+  },
+  label: {
+    fontSize: "12px",
+    textTransform: "uppercase",
+    marginBottom: "5px",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    marginBottom: "15px",
+    borderRadius: "5px",
+    border: "none",
+    fontSize: "16px",
+    color: "#000",
+    background: "#f2f2f2",
+  },
+  button: {
+    padding: "12px",
+    background: "#e6005a",
+    color: "#fff",
+    fontSize: "16px",
+    fontWeight: "bold",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    textTransform: "uppercase",
+  },
+  error: {
+    color: "red",
+    fontSize: "14px",
+    textAlign: "center",
+    marginTop: "10px",
+  },
+};
