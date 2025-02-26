@@ -1,35 +1,29 @@
 import { useEffect, useState } from "react";
 import { getNews } from "../services/api";
 import NewsCard from "../components/NewsCard";
+import "./styles/Home.css";
 
 function Home() {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
-    getNews()
-      .then((data) => {
-        console.log("Dados recebidos da API:", data); // 👈 Adicione esse log
-        if (data && data.length > 0) {
-          setNews(data);
-        } else {
-          console.error("Erro: Nenhuma notícia retornada");
-        }
-      })
-      .catch((error) => console.error("Erro ao buscar notícias:", error));
+    getNews().then(setNews).catch(console.error);
   }, []);
-  
 
   return (
     <div>
       <h1>Últimas Notícias</h1>
-      {news.length > 0 ? (
-        news.map((item) => <NewsCard key={item._id} {...item} />)
-      ) : (
-        <p>Nenhuma notícia disponível.</p>
-      )}
+      <div className="news-grid">
+        {news.length > 0 ? (
+          news.map((item) => <NewsCard key={item._id} {...item} />)
+        ) : (
+          <p>Nenhuma notícia disponível.</p>
+        )}
+      </div>
     </div>
   );
 }
 
 export default Home;
+
 

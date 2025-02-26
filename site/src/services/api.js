@@ -43,3 +43,26 @@ export const getNewsById = async (id) => {
   return response.json();
 };
 
+export const createNews = async (title, content, category, author) => {
+  const response = await fetch(`${API_URL}/news`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, content, category, author }),
+  });
+  return response.json();
+};
+
+export const updateNews = async (id, title, content, category, author) => {
+  const response = await fetch(`${API_URL}/news/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, content, category, author }),
+  });
+  return response.json();
+};
+
+export const deleteNews = async (id) => {
+  await fetch(`${API_URL}/news/${id}`, { method: "DELETE" });
+};
+
+

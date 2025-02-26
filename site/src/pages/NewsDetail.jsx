@@ -1,26 +1,28 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getNewsById } from "../services/api";
 
 function NewsDetail() {
   const { id } = useParams();
-  const [newsItem, setNewsItem] = useState(null);
+  const navigate = useNavigate();
+  const [news, setNews] = useState(null);
 
   useEffect(() => {
-    getNewsById(id).then(setNewsItem);
+    getNewsById(id)
+      .then(setNews)
+      .catch((error) => console.error("Erro ao carregar notícia:", error));
   }, [id]);
 
-  if (!newsItem) return <p>Carregando...</p>;
+  if (!news) return <p>Carregando...</p>;
 
   return (
     <div>
-      <h1>{newsItem.title}</h1>
-      <p>{newsItem.content}</p>
-      {newsItem.image && <img src={newsItem.image} alt={newsItem.title} />}
-      <p><strong>Autor:</strong> {newsItem.author}</p>
-      <p><strong>Data:</strong> {new Date(newsItem.date).toLocaleDateString()}</p>
+      <h1>{news.title}</h1>
+      <p>{news.content}</p>
+      <button onClick={() => navigate("/")}>Voltar para Home</button>
     </div>
   );
 }
 
 export default NewsDetail;
+
