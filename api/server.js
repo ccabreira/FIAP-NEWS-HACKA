@@ -17,7 +17,7 @@ app.use(cors()); // Permite requisições de outros domínios
 app.use("/api/news", newsRoutes);
 
 // 🔹 Importa as rotas
-const authRoutes = require("./routes/authRoutes");
+const authRoutes = require("./src/routes/authRoutes");
 app.use("/api/auth", authRoutes); // Adiciona as rotas de autenticação
 
 // 🔹 Inicializa o servidor
