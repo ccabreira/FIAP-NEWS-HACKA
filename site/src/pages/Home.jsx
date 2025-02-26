@@ -6,24 +6,28 @@ function Home() {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
-    getNews().then(setNews);
+    getNews()
+      .then((data) => {
+        if (data) {
+          setNews(data);
+        } else {
+          console.error("Erro: Nenhuma notícia retornada");
+        }
+      })
+      .catch((error) => console.error("Erro ao buscar notícias:", error));
   }, []);
 
   return (
     <div>
       <h1>Últimas Notícias</h1>
-      {news.map((item) => (
-        <NewsCard key={item._id} {...item} />
-      ))}
+      {news.length > 0 ? (
+        news.map((item) => <NewsCard key={item._id} {...item} />)
+      ) : (
+        <p>Nenhuma notícia disponível.</p>
+      )}
     </div>
   );
 }
-useEffect(() => {
-  getNews().then((data) => {
-    console.log("Notícias carregadas:", data);
-    setNews(data);
-  });
-}, []);
-
 
 export default Home;
+
