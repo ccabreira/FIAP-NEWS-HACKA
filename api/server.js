@@ -16,8 +16,14 @@ app.use(cors()); // Permite requisições de outros domínios
 // 🔹 Rotas
 app.use("/api/news", newsRoutes);
 
+// 🔹 Importa as rotas
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes); // Adiciona as rotas de autenticação
+
 // 🔹 Inicializa o servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+
+
 
 
