@@ -9,14 +9,19 @@ export const loginUser = async (email, password) => {
       body: JSON.stringify({ email, password }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Erro ao fazer login. Verifique suas credenciais.");
+      console.error("Erro no login:", data.error);
+      return null;
     }
 
-    const data = await response.json();
-    return data.token;
+    return {
+      token: data.token,
+      isAdmin: data.isAdmin || false, // Adiciona um campo para verificar admin
+    };
   } catch (error) {
-    console.error("Erro no login:", error);
+    console.error("Erro ao tentar fazer login:", error);
     return null;
   }
 };
