@@ -14,6 +14,15 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+const adminMiddleware = (req, res, next) => {
+  if (!req.user || !req.user.isAdmin) {
+    return res.status(403).json({ error: "Acesso negado. Apenas administradores podem acessar." });
+  }
+  next();
+};
+
+module.exports = { authMiddleware, adminMiddleware };
+
 module.exports = authMiddleware;
 
 

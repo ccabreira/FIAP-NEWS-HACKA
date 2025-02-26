@@ -24,24 +24,27 @@ const createUser = async (req, res, next) => {
 };
 
 // Login de usuário
-const loginUser = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) return next(new AppError("E-mail e senha são obrigatórios", 400));
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
 
+  try {
     const user = await User.findOne({ email });
-    if (!user) return next(new AppError("Usuário não encontrado", 404));
+    if (!user) {
+      return res.status(401).json({ error: "Credenciais inválidas." });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return next(new AppError("Credenciais inválidas", 401));
+    if (!isMatch) {
+      return res.status(401).json({ error: "Credenciais inválidas." });
+    }
 
     const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
-    res.json({ message: "Login bem-sucedido", token });
-  } catch (err) {
-    next(err);
+    res.json({ token, isAdmin: user.isAdmin });
+  } catch (error) {
+    res.status(500).json({ error: "Erro no servidor. Tente novamente." });
   }
 };
 
