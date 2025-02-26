@@ -7,7 +7,15 @@ function Home() {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
-    getNews().then(setNews).catch(console.error);
+    console.log("Buscando notícias...");
+    getNews()
+      .then((data) => {
+        console.log("Notícias recebidas:", data);
+        setNews(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao carregar notícias:", error);
+      });
   }, []);
 
   return (
@@ -15,9 +23,9 @@ function Home() {
       <h1>Últimas Notícias</h1>
       <div className="news-grid">
         {news.length > 0 ? (
-          news.map((item) => <NewsCard key={item._id} {...item} />)
+          news.map((n) => <NewsCard key={n._id} {...n} />)
         ) : (
-          <p>Nenhuma notícia disponível.</p>
+          <p>Nenhuma notícia encontrada.</p>
         )}
       </div>
     </div>
@@ -25,5 +33,3 @@ function Home() {
 }
 
 export default Home;
-
-
