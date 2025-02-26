@@ -46,14 +46,6 @@ function NewsDetail() {
       <h1 style={{ fontSize: "24px", marginBottom: "10px" }}>{newsItem.title}</h1>
       <p style={{ fontSize: "16px", color: "#555" }}>{newsItem.content}</p>
 
-      {/* Exibição da imagem com fallback */}
-      <img
-        src={newsItem.image ? `https://fiap-news-api.onrender.com/${newsItem.image}` : "/placeholder-image.jpg"}
-        alt={newsItem.title}
-        style={{ maxWidth: "100%", height: "auto", borderRadius: "8px", marginTop: "15px" }}
-        onError={(e) => e.target.src = "/placeholder-image.jpg"}
-      />
-
       <p style={{ marginTop: "10px" }}><strong>Autor:</strong> {newsItem.author || "Desconhecido"}</p>
       <p><strong>Data:</strong> {newsItem.date ? new Date(newsItem.date).toLocaleDateString() : "Data indisponível"}</p>
       
@@ -68,3 +60,4 @@ function NewsDetail() {
 }
 
 export default NewsDetail;
+
