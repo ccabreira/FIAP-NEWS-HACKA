@@ -1,12 +1,12 @@
 import { createContext, useState, useContext } from "react";
-import { fetchNews } from "../services/newsService";
+import { getNews } from "../services/api";
 
 const NewsContext = createContext();
 export function NewsProvider({ children }) {
   const [news, setNews] = useState([]);
 
   const loadNews = async () => {
-    const data = await fetchNews();
+    const data = await getNews();
     setNews(data);
   };
 

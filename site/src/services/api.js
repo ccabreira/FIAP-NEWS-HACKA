@@ -1,3 +1,4 @@
+// services/api.js
 const API_URL = import.meta.env.VITE_API_URL || "https://fiap-news-backend.onrender.com/api";
 
 export const loginUser = async (email, password) => {
@@ -6,7 +7,6 @@ export const loginUser = async (email, password) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-
   const data = await response.json();
   return response.ok ? data.token : null;
 };
@@ -17,10 +17,8 @@ export const registerUser = async (name, email, password) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password }),
   });
-
   return response.json();
 };
-
 
 export const getNews = async () => {
   const response = await fetch(`${API_URL}/news`);

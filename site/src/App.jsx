@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NewsDetail from "./pages/NewsDetail";
 import PrivateRoute from "./components/PrivateRoute";
+import NewsList from "./pages/NewsList";
 
 export default function App() {
   return (
@@ -18,8 +19,8 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/news/:id" element={<NewsDetail />} />
-              <Route path="/admin" element={<PrivateRoute />} />
+              <Route path="/news" element={<PrivateRoute><NewsList /></PrivateRoute>} />
+              <Route path="/news/:id" element={<PrivateRoute><NewsDetail /></PrivateRoute>} />
             </Routes>
           </BaseLayout>
         </Router>
