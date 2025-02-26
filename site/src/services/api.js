@@ -21,10 +21,15 @@ export const registerUser = async (name, email, password) => {
 };
 
 export const getNews = async () => {
-  const response = await fetch(`${API_URL}/news`);
-  return response.json();
+  try {
+    const response = await fetch(`${API_URL}/news`);
+    if (!response.ok) throw new Error("Erro ao buscar notícias");
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao carregar notícias:", error);
+    return [];
+  }
 };
-
 export const getNewsById = async (id) => {
   const response = await fetch(`${API_URL}/news/${id}`);
   return response.json();
