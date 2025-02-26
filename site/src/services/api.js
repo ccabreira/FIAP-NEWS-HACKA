@@ -1,5 +1,4 @@
-// services/api.js
-const API_URL = import.meta.env.VITE_API_URL || "https://fiap-news-api.onrender.com/api";
+const API_URL = "https://fiap-news-api.onrender.com/api";
 
 export const loginUser = async (email, password) => {
   const response = await fetch(`${API_URL}/auth/login`, {
@@ -22,14 +21,18 @@ export const registerUser = async (name, email, password) => {
 
 export const getNews = async () => {
   try {
+    console.log("Buscando notícias da API:", `${API_URL}/news`); // 👈 Log para debug
     const response = await fetch(`${API_URL}/news`);
     if (!response.ok) throw new Error("Erro ao buscar notícias");
-    return await response.json();
+    const data = await response.json();
+    console.log("Notícias carregadas:", data); // 👈 Log para debug
+    return data;
   } catch (error) {
     console.error("Erro ao carregar notícias:", error);
     return [];
   }
 };
+
 export const getNewsById = async (id) => {
   const response = await fetch(`${API_URL}/news/${id}`);
   return response.json();

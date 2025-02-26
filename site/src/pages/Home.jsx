@@ -8,7 +8,8 @@ function Home() {
   useEffect(() => {
     getNews()
       .then((data) => {
-        if (data) {
+        console.log("Dados recebidos da API:", data); // 👈 Adicione esse log
+        if (data && data.length > 0) {
           setNews(data);
         } else {
           console.error("Erro: Nenhuma notícia retornada");
@@ -16,6 +17,7 @@ function Home() {
       })
       .catch((error) => console.error("Erro ao buscar notícias:", error));
   }, []);
+  
 
   return (
     <div>
