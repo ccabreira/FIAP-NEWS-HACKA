@@ -21,11 +21,16 @@ export const registerUser = async (name, email, password) => {
 
 export const getNews = async () => {
   try {
-    console.log("Buscando notícias da API:", `${API_URL}/news`); // 👈 Log para debug
+    console.log("Buscando notícias de:", API_URL);
     const response = await fetch(`${API_URL}/news`);
-    if (!response.ok) throw new Error("Erro ao buscar notícias");
+    
+    if (!response.ok) {
+      console.error("Erro ao buscar notícias:", response.status, response.statusText);
+      throw new Error("Erro ao buscar notícias");
+    }
+
     const data = await response.json();
-    console.log("Notícias carregadas:", data); // 👈 Log para debug
+    console.log("Notícias recebidas:", data);
     return data;
   } catch (error) {
     console.error("Erro ao carregar notícias:", error);
