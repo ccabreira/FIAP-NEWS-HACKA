@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getNewsById } from "../services/api";
 
 function NewsDetail() {
@@ -12,7 +12,10 @@ function NewsDetail() {
   useEffect(() => {
     async function fetchNews() {
       try {
+        console.log(`Buscando notícia com ID: ${id}`);
         const data = await getNewsById(id);
+        console.log("Resposta da API:", data);
+
         if (!data || data.error) {
           setError("Notícia não encontrada!");
         } else {
@@ -28,27 +31,38 @@ function NewsDetail() {
     fetchNews();
   }, [id]);
 
-  if (loading) return <p>Carregando...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (loading) return <p style={{ textAlign: "center", fontSize: "18px" }}>Carregando...</p>;
+  if (error) return (
+    <div style={{ textAlign: "center", color: "red", fontSize: "18px" }}>
+      <p>{error}</p>
+      <button onClick={() => navigate("/")} style={{ background: "#007BFF", color: "white", padding: "8px 12px", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+        Voltar para Home
+      </button>
+    </div>
+  );
 
   return (
-    <div>
-      <h1>{newsItem.title}</h1>
-      <p>{newsItem.content}</p>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "20px", textAlign: "center" }}>
+      <h1 style={{ fontSize: "24px", marginBottom: "10px" }}>{newsItem.title}</h1>
+      <p style={{ fontSize: "16px", color: "#555" }}>{newsItem.content}</p>
 
-      {/* Verifica se há uma imagem válida, caso contrário exibe uma imagem padrão */}
+      {/* Exibição da imagem com fallback */}
       <img
         src={newsItem.image ? `https://fiap-news-api.onrender.com/${newsItem.image}` : "/placeholder-image.jpg"}
         alt={newsItem.title}
-        style={{ maxWidth: "100%", height: "auto" }}
+        style={{ maxWidth: "100%", height: "auto", borderRadius: "8px", marginTop: "15px" }}
         onError={(e) => e.target.src = "/placeholder-image.jpg"}
       />
 
-      <p><strong>Autor:</strong> {newsItem.author || "Desconhecido"}</p>
+      <p style={{ marginTop: "10px" }}><strong>Autor:</strong> {newsItem.author || "Desconhecido"}</p>
       <p><strong>Data:</strong> {newsItem.date ? new Date(newsItem.date).toLocaleDateString() : "Data indisponível"}</p>
       
-      {/* Botão de voltar para Home */}
-      <button onClick={() => navigate("/")}>Voltar para Home</button>
+      <button 
+        onClick={() => navigate("/")} 
+        style={{ background: "#007BFF", color: "white", padding: "10px 15px", border: "none", borderRadius: "5px", cursor: "pointer", marginTop: "15px" }}
+      >
+        Voltar para Home
+      </button>
     </div>
   );
 }
