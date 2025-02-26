@@ -9,21 +9,36 @@ export const loginUser = async (email, password) => {
       body: JSON.stringify({ email, password }),
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      console.error("Erro no login:", data.error);
-      return null;
+      throw new Error("Credenciais inválidas.");
     }
 
-    return {
-      token: data.token,
-      isAdmin: data.isAdmin || false, // Adiciona um campo para verificar admin
-    };
+    const data = await response.json();
+    
+    // 🔹 Salva token e usuário no localStorage
+    localStorage.setItem("authToken", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    return data;
   } catch (error) {
-    console.error("Erro ao tentar fazer login:", error);
+    console.error("Erro no login:", error);
     return null;
   }
+};
+
+// 🔹 Adiciona o token automaticamente em requisições protegidas
+export const apiFetch = async (url, options = {}) => {
+  const token = localStorage.getItem("authToken");
+
+  const headers = {
+    "Content-Type": "application/json",
+    ...options.headers,
+  };
+
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const response = await fetch(`${API_URL}${url}`, { ...options, headers });
+  return response.json();
 };
 
 // 🔹 Cadastro do usuário
