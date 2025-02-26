@@ -1,33 +1,37 @@
-const dotenv = require("dotenv");
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./src/config/db");
-const newsRoutes = require("./src/routes/newsRoutes");
 
-dotenv.config();
+// Conecta ao MongoDB
 connectDB();
 
 const app = express();
 
 // 🔹 Middleware
-app.use(express.json()); // Permite JSON no corpo da requisição
-app.use(cors()); // Permite requisições de outros domínios
-
-// 🔹 Rotas
-app.use("/api/news", newsRoutes);
+app.use(express.json());
+app.use(cors());
 
 // 🔹 Importa as rotas
 const authRoutes = require("./src/routes/authRoutes");
-app.use("/api/auth", authRoutes); // Adiciona as rotas de autenticação
+const userRoutes = require("./src/routes/userRoutes");
+const newsRoutes = require("./src/routes/newsRoutes");
 
-// 🔹 Inicializa o servidor
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+// 🔹 Usa as rotas corretamente
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);  // 🔹 Essa rota estava faltando
+app.use("/api/news", newsRoutes);
 
+// 🔹 Rota raiz para teste
 app.get("/", (req, res) => {
     res.send("🚀 API Online!");
-  });
-  
-  console.log(`🌍 Teste a API em: http://localhost:${PORT}/api/news`);
+});
+
+// 🔹 Inicializa o servidor
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+
+console.log(`🌍 Teste a API em: http://localhost:${PORT}/api/news`);
+
 
 

@@ -66,6 +66,10 @@ const getUserProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { createUser, loginUser, getUserProfile };
+module.exports = {
+  createUser,
+  loginUser: exports.loginUser,  // Correção na referência da função exportada
+  getUserProfile
+};
 
 
