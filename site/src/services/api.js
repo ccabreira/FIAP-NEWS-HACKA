@@ -64,13 +64,18 @@ export const getNews = async () => {
 // 🔹 Buscar notícia por ID
 export const getNewsById = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/news/${id}`);
+    console.log("Buscando notícia com ID:", id); // LOG PARA DEBUG
 
+    const response = await fetch(`${API_URL}/news/${id}`);
+    
     if (!response.ok) {
+      console.error("Erro ao buscar notícia:", response.status, response.statusText);
       throw new Error("Notícia não encontrada.");
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log("Notícia recebida:", data); // LOG PARA DEBUG
+    return data;
   } catch (error) {
     console.error("Erro ao buscar notícia:", error);
     return null;
