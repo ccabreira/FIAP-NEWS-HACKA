@@ -1,10 +1,15 @@
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
 
-export default function BaseLayout({ children }) {
+function BaseLayout({ children }) {
   return (
     <div>
-      <Navbar />
-      <main className="container mx-auto p-4">{children}</main>
+      <nav>
+        <Link to="/">🏠 Home</Link>
+      </nav>
+      <main>{children}</main>
     </div>
   );
 }
+
+export default BaseLayout;
