@@ -24,6 +24,11 @@ app.get("/", (req, res) => {
   res.send("🚀 API FIAP News está rodando!");
 });
 
+// 🔄 **Redirecionamento de "/news" para "/api/news"**
+app.use("/news", (req, res) => {
+  res.redirect("/api/news");
+});
+
 // Definir Rotas
 app.use("/api/news", newsRoutes);
 app.use("/api/users", userRoutes);
@@ -32,6 +37,7 @@ app.use("/api/users", userRoutes);
 app.use(errorHandler);
 
 module.exports = app;
+
 
 
 
