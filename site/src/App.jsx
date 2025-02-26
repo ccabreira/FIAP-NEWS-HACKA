@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { NewsProvider } from "./context/NewsContext";
 import BaseLayout from "./layouts/BaseLayout";
