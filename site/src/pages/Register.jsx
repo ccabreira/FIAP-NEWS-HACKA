@@ -19,16 +19,16 @@ export default function Register() {
       const response = await registerUser(name, email, password);
 
       if (response?.user) {
-        navigate("/news"); // 🔹 Redireciona usuário para a página de notícias
-      } else {
-        setError("Erro ao registrar usuário. Tente novamente.");
-      }
-    } catch (err) {
-      setError("Erro ao registrar usuário.");
-    } finally {
-      setLoading(false);
+        navigate("/"); 
+    } else {
+      setError("Erro ao registrar. Tente novamente.");
     }
-  };
+  } catch (err) {
+    setError("Erro ao tentar registrar.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="register-container" style={styles.container}>
