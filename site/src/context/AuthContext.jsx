@@ -17,11 +17,19 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // 🔹 Login: Armazena token e usuário no localStorage
+  // 🔹 Login: Salva usuário e token
   const login = (userData, token) => {
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("authToken", token);
     setUser(userData);
+
+    // 🔹 Redireciona com base no tipo de usuário
+    if (userData.isAdmin) {
+      navigate("/admin");
+    } else {
+      navigate("/");
+    }
+  };
 
     // 🔹 Redireciona para AdminPanel se for admin, senão para Home
     if (userData.isAdmin) {
@@ -31,7 +39,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // 🔹 Logout: Remove token e usuário do localStorage
+  // 🔹 Logout: Remove informações
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("authToken");
@@ -44,9 +52,7 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
 
-// Hook personalizado para acessar a autenticação
 export function useAuth() {
   return useContext(AuthContext);
 }
