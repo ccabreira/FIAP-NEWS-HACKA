@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  console.log("Usuário autenticado:", user);
 
   return (
     <header style={styles.header}>

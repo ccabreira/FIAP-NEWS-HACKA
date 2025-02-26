@@ -21,23 +21,26 @@ export default function Login() {
       const response = await loginUser(email, password);
       console.log("Resposta da API:", response);
 
-      if (response?.token) {
-        // 🔹 Salva token e dados do usuário no localStorage
-        localStorage.setItem("authToken", response.token);
-        localStorage.setItem("user", JSON.stringify(response.user));
-        localStorage.setItem("isAdmin", response.user.isAdmin ? "true" : "false");
+      if (!response || !response.token || !response.user) {
+        setError("Erro ao processar login. Tente novamente.");
+        return;
+      }
 
-        // 🔹 Atualiza o estado global do usuário no contexto
-        login(response.user, response.token);
+      console.log("Admin status:", response.user.isAdmin); // Teste se está vindo corretamente
 
-        // 🔹 Redirecionamento baseado no tipo de usuário
-        if (response.user?.isAdmin) {
-          navigate("/admin");
-        } else {
-          navigate("/");
-        }
+      // 🔹 Salva token e dados do usuário no localStorage
+      localStorage.setItem("authToken", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("isAdmin", response.user.isAdmin ? "true" : "false");
+
+      // 🔹 Atualiza o estado global do usuário no contexto
+      login(response.user, response.token);
+
+      // 🔹 Redirecionamento baseado no tipo de usuário
+      if (response.user.isAdmin) {
+        navigate("/admin");
       } else {
-        setError("Credenciais inválidas. Verifique seu e-mail e senha.");
+        navigate("/");
       }
     } catch (err) {
       console.error("Erro no login:", err);
@@ -140,3 +143,4 @@ const styles = {
     cursor: "pointer",
   },
 };
+

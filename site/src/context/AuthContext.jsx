@@ -13,10 +13,11 @@ export function AuthProvider({ children }) {
 
     if (storedUser && storedToken) {
       setUser(JSON.parse(storedUser));
+      setToken(storedToken);
     }
   }, []);
 
-  const login = (userData, token) => {
+  const login = (userData, usertoken) => {
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("authToken", token);
     setUser(userData);
@@ -41,9 +42,4 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
-
-export function useAuth() {
-  return useContext(AuthContext);
-}
-
-export default AuthContext;
+export const useAuth = () => useContext(AuthContext);
