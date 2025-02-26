@@ -1,76 +1,71 @@
 import { useEffect, useState } from "react";
-import { getNews } from "../services/api";
-import NewsCard from "../components/NewsCard";
-import "../styles/Home.css";
-import React from "react";
-import { Link } from "react-router-dom";
+import Card from "../ui/Card";
 
 export default function Home() {
+  const [news, setNews] = useState([]);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await fetch("https://fiap-news-api.onrender.com/api/news");
+        if (!response.ok) throw new Error("Erro ao buscar notícias.");
+        
+        const data = await response.json();
+        setNews(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchNews();
+  }, []);
+
   return (
     <div style={styles.container}>
-      <header style={styles.header}>
-        <h1 style={styles.title}>
-          <Link to="/" style={styles.link}>Fiap News</Link>
-        </h1>
-        <nav style={styles.nav}>
-          <Link to="/login" style={styles.navLink}>Login</Link>
-          <Link to="/register" style={styles.navLink}>Registrar</Link>
-        </nav>
-      </header>
-
-      <main style={styles.newsContainer}>
-        <h2 style={styles.sectionTitle}>Últimas Notícias</h2>
-        {/* Aqui deve vir a listagem das notícias */}
-      </main>
+      <h2 style={styles.title}>Últimas Notícias</h2>
+      <div style={styles.newsGrid}>
+        {news.length > 0 ? (
+          news.map((item) => (
+            <Card key={item._id}>
+              <h3 style={styles.cardTitle}>{item.title}</h3>
+              <p style={styles.cardText}>{item.description}</p>
+            </Card>
+          ))
+        ) : (
+          <p style={styles.noNews}>Nenhuma notícia disponível.</p>
+        )}
+      </div>
     </div>
   );
 }
 
 const styles = {
   container: {
-    backgroundColor: "#2b0032",
-    minHeight: "100vh",
-    color: "#fff",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  header: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    textAlign: "center",
+    color: "#E6005A",
     padding: "20px",
-    backgroundColor: "#1a001f",
-    position: "fixed",
-    top: 0,
-    left: 0,
+    backgroundColor: "#1A001F",
+    minHeight: "100vh"
   },
   title: {
-    margin: 0,
     fontSize: "24px",
+    marginBottom: "20px"
+  },
+  newsGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: "20px",
+    padding: "20px"
+  },
+  cardTitle: {
+    fontSize: "18px",
     fontWeight: "bold",
+    marginBottom: "10px"
   },
-  link: {
-    color: "#e6005a",
-    textDecoration: "none",
+  cardText: {
+    fontSize: "14px"
   },
-  nav: {
-    display: "flex",
-    gap: "15px",
-  },
-  navLink: {
-    color: "#e6005a",
-    textDecoration: "none",
-    fontSize: "16px",
-  },
-  newsContainer: {
-    marginTop: "80px",
-    width: "80%",
-    textAlign: "center",
-  },
-  sectionTitle: {
-    fontSize: "28px",
-    margin: "20px 0",
-  },
+  noNews: {
+    fontSize: "18px",
+    color: "#ffffff"
+  }
 };
