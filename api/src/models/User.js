@@ -14,6 +14,15 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
+const adminUser = new User({
+  name: "Admin",
+  email: "admin@email.com",
+  password: await bcrypt.hash("123456", 10),
+  isAdmin: true
+});
+await adminUser.save();
+
+
 module.exports = mongoose.model("User", UserSchema);
 
 

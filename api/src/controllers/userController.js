@@ -38,12 +38,15 @@ exports.loginUser = async (req, res) => {
       return res.status(401).json({ error: "Credenciais inválidas." });
     }
 
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id, email: user.email, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
-    res.json({ token, isAdmin: user.isAdmin });
+    res.json({ token, user: { id: user._id, email: user.email, isAdmin: user.isAdmin } });
   } catch (error) {
+    console.error("Erro ao realizar login:", error);
     res.status(500).json({ error: "Erro no servidor. Tente novamente." });
   }
 };
