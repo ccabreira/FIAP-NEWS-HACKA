@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getNewsById } from "../services/api";
+import Navbar from "../components/Navbar";
 
-function NewsDetail() {
+export default function NewsDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [newsItem, setNewsItem] = useState(null);
@@ -31,33 +32,92 @@ function NewsDetail() {
     fetchNews();
   }, [id]);
 
-  if (loading) return <p style={{ textAlign: "center", fontSize: "18px" }}>Carregando...</p>;
-  if (error) return (
-    <div style={{ textAlign: "center", color: "red", fontSize: "18px" }}>
-      <p>{error}</p>
-      <button onClick={() => navigate("/")} style={{ background: "#007BFF", color: "white", padding: "8px 12px", border: "none", borderRadius: "5px", cursor: "pointer" }}>
-        Voltar para Home
-      </button>
-    </div>
-  );
-
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "20px", textAlign: "center" }}>
-      <h1 style={{ fontSize: "24px", marginBottom: "10px" }}>{newsItem.title}</h1>
-      <p style={{ fontSize: "16px", color: "#555" }}>{newsItem.content}</p>
-
-      <p style={{ marginTop: "10px" }}><strong>Autor:</strong> {newsItem.author || "Desconhecido"}</p>
-      <p><strong>Data:</strong> {newsItem.date ? new Date(newsItem.date).toLocaleDateString() : "Data indisponível"}</p>
-      
-      <button 
-        onClick={() => navigate("/")} 
-        style={{ background: "#007BFF", color: "white", padding: "10px 15px", border: "none", borderRadius: "5px", cursor: "pointer", marginTop: "15px" }}
-      >
-        Voltar para Home
-      </button>
-    </div>
+    <>
+      <Navbar />
+      <div style={styles.container}>
+        {loading ? (
+          <p style={styles.loading}>Carregando...</p>
+        ) : error ? (
+          <div style={styles.errorContainer}>
+            <p>{error}</p>
+            <button onClick={() => navigate("/")} style={styles.backButton}>
+              Voltar para Home
+            </button>
+          </div>
+        ) : (
+          <div style={styles.content}>
+            <h1 style={styles.title}>{newsItem.title}</h1>
+            <p style={styles.text}>{newsItem.content}</p>
+            <p style={styles.meta}>
+              <strong>Autor:</strong> {newsItem.author || "Desconhecido"}
+            </p>
+            <p style={styles.meta}>
+              <strong>Data:</strong>{" "}
+              {newsItem.date ? new Date(newsItem.date).toLocaleDateString() : "Data indisponível"}
+            </p>
+            <button onClick={() => navigate("/")} style={styles.backButton}>
+              Voltar para Home
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
-export default NewsDetail;
-
+const styles = {
+  container: {
+    minHeight: "100vh",
+    backgroundColor: "#2b0032",
+    color: "#fff",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    paddingTop: "80px",
+  },
+  loading: {
+    fontSize: "18px",
+    textAlign: "center",
+  },
+  errorContainer: {
+    textAlign: "center",
+    color: "red",
+    fontSize: "18px",
+  },
+  content: {
+    maxWidth: "700px",
+    padding: "20px",
+    textAlign: "center",
+    background: "#400040",
+    borderRadius: "8px",
+    boxShadow: "0px 0px 10px rgba(255, 255, 255, 0.1)",
+  },
+  title: {
+    fontSize: "24px",
+    marginBottom: "10px",
+    color: "#E6005A",
+  },
+  text: {
+    fontSize: "16px",
+    color: "#ddd",
+    lineHeight: "1.5",
+  },
+  meta: {
+    fontSize: "14px",
+    marginTop: "10px",
+    color: "#bbb",
+  },
+  backButton: {
+    background: "#E6005A",
+    color: "#fff",
+    padding: "10px 15px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginTop: "15px",
+    textTransform: "uppercase",
+    fontWeight: "bold",
+  },
+};

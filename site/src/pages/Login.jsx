@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext"; // Importa o contexto de autenticação
-import { loginUser } from "../services/api"; 
+import { loginUser } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -44,35 +45,38 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container" style={styles.container}>
-      <form onSubmit={handleLogin} style={styles.form}>
-        <label style={styles.label}>USUÁRIO</label>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
+    <>
+      <Navbar />
+      <div className="login-container" style={styles.container}>
+        <form onSubmit={handleLogin} style={styles.form}>
+          <label style={styles.label}>USUÁRIO</label>
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={styles.input}
+          />
 
-        <label style={styles.label}>SENHA</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={styles.input}
-        />
+          <label style={styles.label}>SENHA</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={styles.input}
+          />
 
-        <button type="submit" disabled={loading} style={styles.button}>
-          {loading ? "Conectando..." : "CONECTAR"}
-        </button>
+          <button type="submit" disabled={loading} style={styles.button}>
+            {loading ? "Conectando..." : "CONECTAR"}
+          </button>
 
-        {error && <p style={styles.error}>{error}</p>}
+          {error && <p style={styles.error}>{error}</p>}
 
-        <p style={styles.forgotPassword}>ESQUECI MINHA SENHA</p>
-      </form>
-    </div>
+          <p style={styles.forgotPassword}>ESQUECI MINHA SENHA</p>
+        </form>
+      </div>
+    </>
   );
 }
 

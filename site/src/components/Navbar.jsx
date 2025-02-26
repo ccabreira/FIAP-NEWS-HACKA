@@ -26,37 +26,44 @@ export default function Navbar() {
 
 const styles = {
   header: {
+    width: "100%",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "15px 20px",
-    background: "#1A001F",
-    color: "#E6005A",
+    padding: "20px",
+    backgroundColor: "#1a001f",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    zIndex: 1000,
   },
   logo: {
     fontSize: "24px",
     fontWeight: "bold",
-    color: "#E6005A",
+    color: "#e6005a",
     textDecoration: "none",
+    marginLeft: "20px"
   },
   nav: {
     display: "flex",
-    gap: "20px",
+    gap: "15px",
+    marginRight: "20px"
   },
   userName: {
+    marginRight: "15px",
     fontSize: "16px",
-    color: "#E6005A",
+    color: "#fff"
   },
   navLink: {
-    color: "#E6005A",
+    color: "#e6005a",
     textDecoration: "none",
-    fontSize: "16px",
+    fontSize: "16px"
   },
   logoutButton: {
     background: "none",
     border: "none",
-    color: "#E6005A",
+    color: "#e6005a",
     cursor: "pointer",
-    fontSize: "16px",
-  },
+    fontSize: "16px"
+  }
 };

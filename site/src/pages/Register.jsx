@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/api";
+import Navbar from "../components/Navbar";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -19,54 +20,59 @@ export default function Register() {
       const response = await registerUser(name, email, password);
 
       if (response?.user) {
-        navigate("/"); 
-    } else {
-      setError("Erro ao registrar. Tente novamente.");
+        navigate("/"); // 🔹 Redireciona para Home após registro bem-sucedido
+      } else {
+        setError("Erro ao registrar. Tente novamente.");
+      }
+    } catch (err) {
+      setError("Erro ao tentar registrar.");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    setError("Erro ao tentar registrar.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
-    <div className="register-container" style={styles.container}>
-      <form onSubmit={handleRegister} style={styles.form}>
-        <label style={styles.label}>NOME</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          style={styles.input}
-        />
+    <>
+      <Navbar />
+      <div style={styles.container}>
+        <form onSubmit={handleRegister} style={styles.form}>
+          <h2 style={styles.title}>Registrar</h2>
 
-        <label style={styles.label}>E-MAIL</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
+          <label style={styles.label}>NOME</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            style={styles.input}
+          />
 
-        <label style={styles.label}>SENHA</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={styles.input}
-        />
+          <label style={styles.label}>E-MAIL</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={styles.input}
+          />
 
-        <button type="submit" disabled={loading} style={styles.button}>
-          {loading ? "Registrando..." : "REGISTRAR"}
-        </button>
+          <label style={styles.label}>SENHA</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={styles.input}
+          />
 
-        {error && <p style={styles.error}>{error}</p>}
-      </form>
-    </div>
+          <button type="submit" disabled={loading} style={styles.button}>
+            {loading ? "Registrando..." : "REGISTRAR"}
+          </button>
+
+          {error && <p style={styles.error}>{error}</p>}
+        </form>
+      </div>
+    </>
   );
 }
 
@@ -84,8 +90,15 @@ const styles = {
     padding: "20px",
     borderRadius: "8px",
     background: "#400040",
-    width: "300px",
+    width: "320px",
     color: "#fff",
+    boxShadow: "0px 0px 10px rgba(255, 255, 255, 0.1)",
+  },
+  title: {
+    textAlign: "center",
+    color: "#E6005A",
+    fontSize: "22px",
+    marginBottom: "15px",
   },
   label: {
     fontSize: "12px",
