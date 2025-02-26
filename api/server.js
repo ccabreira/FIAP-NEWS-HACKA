@@ -24,6 +24,10 @@ app.use("/api/auth", authRoutes); // Adiciona as rotas de autenticação
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
 
-
+app.get("/", (req, res) => {
+    res.send("🚀 API Online!");
+  });
+  
+  console.log(`🌍 Teste a API em: http://localhost:${PORT}/api/news`);
 
 
