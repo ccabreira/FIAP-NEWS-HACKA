@@ -1,15 +1,15 @@
-import { useState, useContext } from "react";
-import { useAuth } from "../context/AuthContext"; // Import correto do contexto
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext"; // Importa o contexto de autenticação
 import { loginUser } from "../services/api"; 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth(); // Pega a função login do contexto
-  const navigate = useNavigate(); // Redirecionamento pós-login
+  const { login } = useAuth(); // Obtém a função login do contexto
+  const navigate = useNavigate(); // Para redirecionamento pós-login
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,15 +18,20 @@ export default function Login() {
 
     try {
       const response = await loginUser(email, password);
-      
-      if (response?.token) {
-        localStorage.setItem("authToken", response.token);
 
-        // 🔹 Se for admin, redireciona para o painel admin
-        if (response.isAdmin) {
+      if (response?.token) {
+        // 🔹 Salva token e dados do usuário no localStorage
+        localStorage.setItem("authToken", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+
+        // 🔹 Atualiza o estado global do usuário no contexto
+        login(response.user, response.token);
+
+        // 🔹 Redirecionamento baseado no tipo de usuário
+        if (response.user?.isAdmin) {
           navigate("/admin");
         } else {
-          navigate("/"); // Se não for admin, volta para home
+          navigate("/");
         }
       } else {
         setError("Credenciais inválidas. Verifique seu e-mail e senha.");
@@ -128,6 +133,3 @@ const styles = {
     cursor: "pointer",
   },
 };
-
-
-
