@@ -19,11 +19,13 @@ export default function Login() {
 
     try {
       const response = await loginUser(email, password);
+      console.log("Resposta da API:", response);
 
       if (response?.token) {
         // 🔹 Salva token e dados do usuário no localStorage
         localStorage.setItem("authToken", response.token);
         localStorage.setItem("user", JSON.stringify(response.user));
+        localStorage.setItem("isAdmin", response.user.isAdmin ? "true" : "false");
 
         // 🔹 Atualiza o estado global do usuário no contexto
         login(response.user, response.token);
@@ -38,7 +40,8 @@ export default function Login() {
         setError("Credenciais inválidas. Verifique seu e-mail e senha.");
       }
     } catch (err) {
-      setError("Erro ao tentar fazer login.");
+      console.error("Erro no login:", err);
+      setError("Erro ao tentar fazer login. Tente Novamente.");
     } finally {
       setLoading(false);
     }
