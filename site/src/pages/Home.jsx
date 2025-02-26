@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getNews } from "../services/api";
 import NewsCard from "../components/NewsCard";
-import "./styles/Home.css";
+import "../styles/Home.css";
 
 function Home() {
   const [news, setNews] = useState([]);
