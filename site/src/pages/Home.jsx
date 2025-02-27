@@ -13,7 +13,7 @@ export default function Home() {
         const data = await response.json();
         setNews(data);
       } catch (error) {
-        console.error(error);
+        console.error("Erro ao carregar notícias:", error);
       }
     };
     fetchNews();
