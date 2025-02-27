@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const newsRouter = require('./routes/news');
 
 const userRoutes = require("./src/routes/userRoutes");
 
@@ -15,13 +16,9 @@ app.use(express.json()); // Para receber JSON no body
 app.use(cors()); // Permitir requisições de outras origens
 
 // 🔹 Conectar ao MongoDB
-mongoose
-  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/fiapnews", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => console.log("✅ Conectado ao MongoDB"))
-  .catch((err) => console.error("❌ Erro ao conectar ao MongoDB:", err));
+mongoose.connect('mongodb://localhost/fiap-news', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Conectado ao MongoDB'))
+  .catch(err => console.error('Erro ao conectar ao MongoDB', err));
 
 // 🔹 Definição das rotas
 app.use("/api/users", userRoutes); // Rota para login e cadastro de usuários
