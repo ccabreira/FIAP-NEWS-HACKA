@@ -3,16 +3,14 @@ const cors = require("cors");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const newsRoutes = require("./src/routes/newsRoutes");
-const userRoutes = require("./src/routes/userRoutes");
-const errorHandler = require("./src/middlewares/errorHandler");
 
 const app = express();
 
-app.use(morgan("dev")); // Log de requisições
-app.use(express.json()); // Permite receber JSON no body das requisições
-app.use(cors()); // Habilita CORS
+app.use(morgan("dev")); // Log das requisições
+app.use(express.json()); // Suporte a JSON no body das requisições
+app.use(cors()); // Permite requisições do frontend
 
-// Rate Limiting para evitar abusos
+// 🔹 Rate Limiting para evitar abuso de requisições
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
   max: 100, // Máximo de 100 requisições por IP
@@ -24,11 +22,8 @@ app.get("/", (req, res) => {
   res.send("🚀 API FIAP News está rodando!");
 });
 
-// ✅ Rotas corretas
+// ✅ Rotas da API
 app.use("/api/news", newsRoutes);
-app.use("/api/users", userRoutes);
-
-// Middleware de tratamento de erros
-app.use(errorHandler);
 
 module.exports = app;
+

@@ -1,16 +1,16 @@
 const express = require("express");
+const router = express.Router();
 const { getAllNews, getNewsById, createNews } = require("../controllers/newsController");
 
-const router = express.Router();
-
-// ✅ Rota para obter todas as notícias
+// ✅ Listar todas as notícias
 router.get("/", getAllNews);
 
-// ✅ Rota para obter uma única notícia por ID
+// ✅ Buscar uma notícia por ID
 router.get("/:id", getNewsById);
 
-// ✅ Rota para criar uma nova notícia
+// ✅ Criar uma nova notícia
 router.post("/", createNews);
 
-module.exports = router; // 
+module.exports = router;
+
 
