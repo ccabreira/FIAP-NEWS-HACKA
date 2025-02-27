@@ -23,34 +23,34 @@ As notícias são armazenadas no **MongoDB** e consumidas pelo frontend via API.
 
 ```
 fiap-news/
-├── api/                  # Backend
-│   ├── src/
+├── api/                              # Pasta raiz do backend
+│   ├── src/                          # Código-fonte principal
 │   │   ├── config/
-│   │   │   ├── db.js
+│   │   │   └── db.js                 # Configuração de conexão ao MongoDB (Mongoose)
 │   │   ├── controllers/
-│   │   │   ├── newsController.js
+│   │   │   └── newsController.js     # Lógica de negócios e manipulação das requisições para notícias
 │   │   ├── models/
-│   │   │   ├── News.js
+│   │   │   └── News.js               # Definição do modelo (schema) de notícias no MongoDB
 │   │   ├── routes/
-│   │   │   ├── newsRoutes.js
-│   ├── server.js
-│   ├── .env
-├── site/                 # Frontend
+│   │   │   └── newsRoutes.js         # Rotas (endpoints) relacionados a notícias
+│   └── server.js                     # Arquivo principal do servidor Express
+│   └── .env                          # Variáveis de ambiente (porta, URI do MongoDB, etc.)
+├── site/                             # Pasta raiz do frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── NewsCard.jsx
+│   │   │   └── NewsCard.jsx          # Componente que exibe o card de uma notícia
 │   │   ├── context/
-│   │   │   ├── NewsContext.js
+│   │   │   └── NewsContext.js        # Context API para compartilhar estado (notícias) entre componentes
 │   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   ├── NewsDetail.jsx
+│   │   │   ├── Home.jsx              # Página inicial que lista as notícias
+│   │   │   └── NewsDetail.jsx        # Página de detalhe de uma notícia específica
 │   │   ├── services/
-│   │   │   ├── api.js
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   ├── index.html
-│   ├── package.json
-│   ├── vite.config.js
+│   │   │   └── api.js                # Configuração do Axios e funções para chamar a API
+│   │   ├── App.jsx                   # Componente principal que organiza as rotas
+│   │   └── main.jsx                  # Ponto de entrada que renderiza a aplicação React
+│   ├── index.html                    # Documento HTML principal do frontend
+│   ├── package.json                  # Dependências e scripts do projeto
+│   └── vite.config.js                # Configurações do Vite para o build
 ```
 
 ## **Como rodar o projeto**
