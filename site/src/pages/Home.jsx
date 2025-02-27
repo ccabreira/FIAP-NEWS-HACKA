@@ -5,13 +5,18 @@ import { fetchNews } from "../services/api";
 export default function Home() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function loadNews() {
       try {
         const data = await fetchNews();
+        if (data.length === 0) {
+          setError(true);
+        }
         setNews(data);
       } catch (error) {
+        setError(true);
         console.error("Erro ao buscar notícias:", error);
       } finally {
         setLoading(false);
@@ -25,7 +30,9 @@ export default function Home() {
       <h1 style={styles.header}>Últimas Notícias</h1>
       {loading ? (
         <p style={styles.loading}>Carregando notícias...</p>
-      ) : news.length > 0 ? (
+      ) : error ? (
+        <p style={styles.error}>Erro ao carregar notícias ou nenhuma disponível.</p>
+      ) : (
         <div style={styles.newsList}>
           {news.map((item) => (
             <div key={item._id} style={styles.newsCard}>
@@ -35,8 +42,6 @@ export default function Home() {
             </div>
           ))}
         </div>
-      ) : (
-        <p style={styles.noNews}>Nenhuma notícia disponível.</p>
       )}
     </div>
   );
@@ -59,9 +64,9 @@ const styles = {
     fontSize: "18px",
     color: "#E6005A",
   },
-  noNews: {
+  error: {
     fontSize: "18px",
-    color: "#E6005A",
+    color: "#ff4c4c",
   },
   newsList: {
     display: "grid",
@@ -88,3 +93,5 @@ const styles = {
     display: "block",
   },
 };
+
+

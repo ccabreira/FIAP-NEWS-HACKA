@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../services/api";
+import { fetchNewsById } from "../services/api";
 
 export default function NewsDetail() {
   const { id } = useParams();
@@ -10,21 +10,21 @@ export default function NewsDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchNews() {
+    async function loadNewsDetail() {
       try {
-        const response = await api.get(`/news/${id}`);
-        if (!response.data) {
+        const data = await fetchNewsById(id);
+        if (!data) {
           setError("Notícia não encontrada!");
           return;
         }
-        setNewsItem(response.data);
+        setNewsItem(data);
       } catch (err) {
         setError("Erro ao carregar a notícia.");
       } finally {
         setLoading(false);
       }
     }
-    fetchNews();
+    loadNewsDetail();
   }, [id]);
 
   if (loading) return <p>Carregando...</p>;
