@@ -1,4 +1,3 @@
-// src/pages/NewsDetail.jsx - Exibe detalhes da notícia
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { NewsContext } from "../context/NewsContext";

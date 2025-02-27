@@ -1,4 +1,3 @@
-// src/pages/Home.jsx - Página principal com a lista de notícias
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchNews } from "../services/api";

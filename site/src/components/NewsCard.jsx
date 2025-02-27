@@ -1,4 +1,3 @@
-// src/components/NewsCard.jsx - Componente para exibir cada notícia
 import React from "react";
 import { Link } from "react-router-dom";
 

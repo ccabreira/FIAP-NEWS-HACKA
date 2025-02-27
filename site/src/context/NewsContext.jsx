@@ -1,4 +1,3 @@
-// src/context/NewsContext.jsx - Contexto para armazenar notícias
 import React, { createContext, useState, useEffect } from "react";
 import { fetchNews } from "../services/api";
 

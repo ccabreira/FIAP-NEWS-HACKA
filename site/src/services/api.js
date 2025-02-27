@@ -1,4 +1,3 @@
-// src/services/api.js - Requisições à API do backend
 const API_URL = "https://fiap-news-api.onrender.com/api/news";
 
 export const fetchNews = async () => {
