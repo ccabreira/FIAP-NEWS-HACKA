@@ -1,29 +1,16 @@
+// src/routes/newsRoutes.js - Define as rotas da API
 const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const rateLimit = require("express-rate-limit");
-const newsRoutes = require("./src/routes/newsRoutes");
+const { getAllNews, getNewsById, createNews } = require("../controllers/newsController");
 
-const app = express();
+const router = express.Router();
 
-app.use(morgan("dev")); // Log das requisições
-app.use(express.json()); // Suporte a JSON no body das requisições
-app.use(cors()); // Permite requisições do frontend
+// Listar todas as notícias
+router.get("/", getAllNews);
 
-// 🔹 Rate Limiting para evitar abuso de requisições
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // Máximo de 100 requisições por IP
-});
-app.use(limiter);
+// Buscar uma notícia por ID
+router.get("/:id", getNewsById);
 
-// ✅ Rota raiz para verificar se a API está rodando
-app.get("/", (req, res) => {
-  res.send("🚀 API FIAP News está rodando!");
-});
+// Criar uma nova notícia
+router.post("/", createNews);
 
-// ✅ Rotas da API
-app.use("/api/news", newsRoutes);
-
-module.exports = app;
-
+module.exports = router;

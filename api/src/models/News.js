@@ -1,3 +1,4 @@
+// src/models/News.js - Modelo da notícia no MongoDB
 const mongoose = require("mongoose");
 
 const newsSchema = new mongoose.Schema(
@@ -6,10 +7,10 @@ const newsSchema = new mongoose.Schema(
     category: { type: String, required: true, trim: true },
     author: { type: String, required: true, trim: true },
     content: { type: String, required: true, trim: true },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
   },
   {
-    timestamps: true // 🔹 Adiciona "createdAt" e "updatedAt" automaticamente
+    timestamps: true, // Adiciona createdAt e updatedAt automaticamente
   }
 );
 
