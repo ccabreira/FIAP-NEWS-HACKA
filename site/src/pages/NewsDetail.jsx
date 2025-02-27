@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getNewsById } from "../services/api";
-import Navbar from "../components/Navbar";
 
 export default function NewsDetail() {
   const { id } = useParams();
@@ -71,43 +69,15 @@ const styles = {
     minHeight: "100vh",
     backgroundColor: "#2b0032",
     color: "#fff",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    paddingTop: "80px",
-  },
-  loading: {
-    fontSize: "18px",
-    textAlign: "center",
-  },
-  errorContainer: {
-    textAlign: "center",
-    color: "red",
-    fontSize: "18px",
-  },
-  content: {
-    maxWidth: "700px",
-    padding: "20px",
-    textAlign: "center",
-    background: "#400040",
-    borderRadius: "8px",
-    boxShadow: "0px 0px 10px rgba(255, 255, 255, 0.1)",
   },
   title: {
     fontSize: "24px",
-    marginBottom: "10px",
     color: "#E6005A",
   },
   text: {
     fontSize: "16px",
     color: "#ddd",
     lineHeight: "1.5",
-  },
-  meta: {
-    fontSize: "14px",
-    marginTop: "10px",
-    color: "#bbb",
   },
   backButton: {
     background: "#E6005A",
@@ -116,8 +86,6 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
-    marginTop: "15px",
-    textTransform: "uppercase",
     fontWeight: "bold",
   },
 };
