@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getNewsById } from "../services/api";
+import { getNewsById } from "../services/newsService";
 import Navbar from "../components/Navbar";
 
 export default function NewsDetail() {
