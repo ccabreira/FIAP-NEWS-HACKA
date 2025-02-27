@@ -19,17 +19,12 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// ✅ **Rota raiz para evitar erro 404**
+// ✅ Rota raiz para verificar se a API está rodando
 app.get("/", (req, res) => {
   res.send("🚀 API FIAP News está rodando!");
 });
 
-// 🔄 **Redirecionamento de "/news" para "/api/news"**
-app.use("/news", (req, res) => {
-  res.redirect("/api/news");
-});
-
-// Definir Rotas
+// ✅ Rotas corretas
 app.use("/api/news", newsRoutes);
 app.use("/api/users", userRoutes);
 
@@ -37,7 +32,3 @@ app.use("/api/users", userRoutes);
 app.use(errorHandler);
 
 module.exports = app;
-
-
-
-
