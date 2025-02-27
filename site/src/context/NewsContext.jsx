@@ -17,4 +17,3 @@ export const NewsProvider = ({ children }) => {
 
   return <NewsContext.Provider value={{ news }}>{children}</NewsContext.Provider>;
 };
-}
