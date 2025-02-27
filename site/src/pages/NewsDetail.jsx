@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getNewsById } from "../services/newsService";
+import { getNewsById } from "../services/api";
+import Navbar from "../components/Navbar";
 
 export default function NewsDetail() {
   const { id } = useParams();
@@ -12,13 +13,18 @@ export default function NewsDetail() {
   useEffect(() => {
     async function fetchNews() {
       try {
-        const response = await fetch(`https://fiap-news-api.onrender.com/news/${id}`);
-        if (!response.ok) throw new Error("Notícia não encontrada.");
+        console.log(`Buscando notícia com ID: ${id}`);
+        const data = await getNewsById(id);
+        console.log("Resposta da API:", data);
 
-        const data = await response.json();
-        setNewsItem(data);
+        if (!data || data.error) {
+          setError("Notícia não encontrada!");
+        } else {
+          setNewsItem(data);
+        }
       } catch (err) {
-        setError(err.message);
+        setError("Erro ao carregar a notícia.");
+        console.error("Erro ao buscar notícia:", err);
       } finally {
         setLoading(false);
       }
@@ -27,52 +33,91 @@ export default function NewsDetail() {
   }, [id]);
 
   return (
-    <div style={styles.container}>
-      {loading && <p>Carregando...</p>}
-      {error && <p style={styles.error}>{error}</p>}
-
-      {newsItem && (
-        <>
-          <h1 style={styles.title}>{newsItem.title}</h1>
-          <p><strong>Categoria:</strong> {newsItem.category}</p>
-          <p><strong>Autor:</strong> {newsItem.author || "Desconhecido"}</p>
-          <p style={styles.text}>{newsItem.content}</p>
-          <button onClick={() => navigate("/")} style={styles.backButton}>
-            Voltar para Home
-          </button>
-        </>
-      )}
-    </div>
+    <>
+      <Navbar />
+      <div style={styles.container}>
+        {loading ? (
+          <p style={styles.loading}>Carregando...</p>
+        ) : error ? (
+          <div style={styles.errorContainer}>
+            <p>{error}</p>
+            <button onClick={() => navigate("/")} style={styles.backButton}>
+              Voltar para Home
+            </button>
+          </div>
+        ) : (
+          <div style={styles.content}>
+            <h1 style={styles.title}>{newsItem.title}</h1>
+            <p style={styles.text}>{newsItem.content}</p>
+            <p style={styles.meta}>
+              <strong>Autor:</strong> {newsItem.author || "Desconhecido"}
+            </p>
+            <p style={styles.meta}>
+              <strong>Data:</strong>{" "}
+              {newsItem.date ? new Date(newsItem.date).toLocaleDateString() : "Data indisponível"}
+            </p>
+            <button onClick={() => navigate("/")} style={styles.backButton}>
+              Voltar para Home
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
 const styles = {
   container: {
     minHeight: "100vh",
-    textAlign: "center",
-    padding: "20px",
     backgroundColor: "#2b0032",
     color: "#fff",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    paddingTop: "80px",
+  },
+  loading: {
+    fontSize: "18px",
+    textAlign: "center",
+  },
+  errorContainer: {
+    textAlign: "center",
+    color: "red",
+    fontSize: "18px",
+  },
+  content: {
+    maxWidth: "700px",
+    padding: "20px",
+    textAlign: "center",
+    background: "#400040",
+    borderRadius: "8px",
+    boxShadow: "0px 0px 10px rgba(255, 255, 255, 0.1)",
   },
   title: {
     fontSize: "24px",
+    marginBottom: "10px",
     color: "#E6005A",
   },
   text: {
-    fontSize: "18px",
+    fontSize: "16px",
+    color: "#ddd",
     lineHeight: "1.5",
   },
+  meta: {
+    fontSize: "14px",
+    marginTop: "10px",
+    color: "#bbb",
+  },
   backButton: {
-    marginTop: "20px",
     background: "#E6005A",
     color: "#fff",
-    padding: "10px",
-    borderRadius: "5px",
+    padding: "10px 15px",
     border: "none",
+    borderRadius: "5px",
     cursor: "pointer",
+    marginTop: "15px",
+    textTransform: "uppercase",
     fontWeight: "bold",
-  },
-  error: {
-    color: "red",
   },
 };
