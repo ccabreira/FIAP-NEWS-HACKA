@@ -12,7 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 // 🔹 Rotas
-app.use("/news", newsRoutes); // 🔹 Define "/news" como prefixo
+
+app.use("/api/news", newsRoutes); // 🔹 Define "/news" como prefixo
 
 // 🔹 Conectar ao MongoDB
 mongoose.connect(process.env.MONGO_URI, {
