@@ -1,14 +1,14 @@
 import axios from "axios";
 
-const API_URL = "https://fiap-news-api.onrender.com/api/news";
-
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: "https://fiap-news-hacka.onrender.com/api", // REMOVA o "/news"
 });
+
+export default api;
 
 export const fetchNews = async () => {
   try {
-    const response = await api.get("/");
+    const response = await api.get("/news"); // Adicione "/news" aqui
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar notícias:", error);
@@ -18,12 +18,10 @@ export const fetchNews = async () => {
 
 export const fetchNewsById = async (id) => {
   try {
-    const response = await api.get(`/${id}`);
+    const response = await api.get(`/news/${id}`); // Adicione "/news" aqui
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar notícia:", error);
     return null;
   }
 };
-
-export default api;

@@ -1,38 +1,43 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../services/api";
+import { fetchNews } from "../services/api";
 
 export default function Home() {
   const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchNews() {
+    async function loadNews() {
       try {
-        const response = await api.get("/news");
-        setNews(response.data);
+        const data = await fetchNews();
+        setNews(data);
       } catch (error) {
         console.error("Erro ao buscar notícias:", error);
+      } finally {
+        setLoading(false);
       }
     }
-    fetchNews();
+    loadNews();
   }, []);
 
   return (
     <div style={styles.container}>
       <h1 style={styles.header}>Últimas Notícias</h1>
-      <div style={styles.newsList}>
-        {news.length > 0 ? (
-          news.map((item) => (
+      {loading ? (
+        <p style={styles.loading}>Carregando notícias...</p>
+      ) : news.length > 0 ? (
+        <div style={styles.newsList}>
+          {news.map((item) => (
             <div key={item._id} style={styles.newsCard}>
               <h2>{item.title}</h2>
               <p style={styles.category}>{item.category}</p>
               <Link to={`/news/${item._id}`} style={styles.readMore}>Leia mais</Link>
             </div>
-          ))
-        ) : (
-          <p>Carregando notícias...</p>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p style={styles.noNews}>Nenhuma notícia disponível.</p>
+      )}
     </div>
   );
 }
@@ -49,6 +54,14 @@ const styles = {
     fontSize: "32px",
     color: "#E6005A",
     fontWeight: "bold",
+  },
+  loading: {
+    fontSize: "18px",
+    color: "#E6005A",
+  },
+  noNews: {
+    fontSize: "18px",
+    color: "#E6005A",
   },
   newsList: {
     display: "grid",
@@ -73,5 +86,5 @@ const styles = {
     fontSize: "16px",
     marginTop: "10px",
     display: "block",
-  }
+  },
 };
