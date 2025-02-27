@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar"; // Importando a Navbar
 import { fetchNewsById } from "../services/api";
 
 export default function NewsDetail() {
@@ -10,7 +11,7 @@ export default function NewsDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function loadNewsDetail() {
+    async function fetchNews() {
       try {
         const data = await fetchNewsById(id);
         if (!data) {
@@ -24,7 +25,7 @@ export default function NewsDetail() {
         setLoading(false);
       }
     }
-    loadNewsDetail();
+    fetchNews();
   }, [id]);
 
   if (loading) return <p>Carregando...</p>;
@@ -32,6 +33,7 @@ export default function NewsDetail() {
 
   return (
     <div style={styles.container}>
+      <Navbar /> {/* Adicionando a Navbar */}
       <h1 style={styles.title}>{newsItem.title}</h1>
       <p style={styles.category}>Categoria: {newsItem.category}</p>
       <p style={styles.author}>Por {newsItem.author}</p>
@@ -40,6 +42,8 @@ export default function NewsDetail() {
     </div>
   );
 }
+
+
 
 const styles = {
   container: {

@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 import { fetchNews } from "../services/api";
 
 export default function Home() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function loadNews() {
       try {
         const data = await fetchNews();
-        if (data.length === 0) {
-          setError(true);
-        }
         setNews(data);
       } catch (error) {
-        setError(true);
         console.error("Erro ao buscar notícias:", error);
       } finally {
         setLoading(false);
@@ -27,12 +23,11 @@ export default function Home() {
 
   return (
     <div style={styles.container}>
+      <Navbar />
       <h1 style={styles.header}>Últimas Notícias</h1>
       {loading ? (
         <p style={styles.loading}>Carregando notícias...</p>
-      ) : error ? (
-        <p style={styles.error}>Erro ao carregar notícias ou nenhuma disponível.</p>
-      ) : (
+      ) : news.length > 0 ? (
         <div style={styles.newsList}>
           {news.map((item) => (
             <div key={item._id} style={styles.newsCard}>
@@ -42,10 +37,13 @@ export default function Home() {
             </div>
           ))}
         </div>
+      ) : (
+        <p style={styles.noNews}>Nenhuma notícia disponível.</p>
       )}
     </div>
   );
 }
+
 
 const styles = {
   container: {
