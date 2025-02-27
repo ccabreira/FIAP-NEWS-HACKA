@@ -21,6 +21,7 @@ As notícias são armazenadas no **MongoDB** e consumidas pelo frontend via API.
 
 ## **Estrutura do projeto**
 
+```
 fiap-news/
 ├── api/                  # Backend
 │   ├── src/
@@ -50,26 +51,40 @@ fiap-news/
 │   ├── index.html
 │   ├── package.json
 │   ├── vite.config.js
+```
 
+markdown  
+Copiar  
+Editar
 
 ## **Como rodar o projeto**
 
 ### **Backend**
 1. Acesse a pasta `api`  
 2. Instale as dependências:
+   ```sh
    npm install
+   ```
 3. Configure as variáveis de ambiente no arquivo **.env**:
+   ```sh
    MONGO_URI=<sua_string_de_conexao_mongodb>
    PORT=5000
+   ```
 4. Inicie o servidor:
+   ```sh
    npm run dev
+   ```
 
 ### **Frontend**
 1. Acesse a pasta `site`  
 2. Instale as dependências:
+   ```sh
    npm install
+   ```
 3. Inicie a aplicação:
+   ```sh
    npm run dev
+   ```
 
 ## **Funcionalidades**
 ✅ Exibição de uma lista de notícias na página inicial  
