@@ -53,10 +53,6 @@ fiap-news/
 │   ├── vite.config.js
 ```
 
-markdown  
-Copiar  
-Editar
-
 ## **Como rodar o projeto**
 
 ### **Backend**
